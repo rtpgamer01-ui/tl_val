@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Online Interview</title>
+
+    <style>
+      body {
+        background: #0f172a;
+        color: white;
+        font-family: Arial;
+        text-align: center;
+      }
+
+      /* 🔹 Mirror ONLY preview */
+      #video.preview {
+        transform: scaleX(-1);
+      }
+
+      video {
+        width: 70%;
+        border-radius: 12px;
+        margin-top: 20px;
+        border: 2px solid #38bdf8;
+      }
+
+      button {
+        padding: 12px 20px;
+        margin: 10px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .start {
+        background: #22c55e;
+      }
+      .stop {
+        background: #ef4444;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>🎥 Online Interview</h1>
+
+    <button class="start" onclick="startInterview()">Start Interview</button>
+    <button class="stop" onclick="stopInterview()">Stop Interview</button>
+
+    <br />
+    <video id="video" autoplay muted class="preview"></video>
+
+    <script>
+      const API_BASE = "https://interview1.wasmer.app/";
+    //   const API_BASE = "http://localhost/interview/";
+
+      let stream;
+      let mediaRecorder;
+      let sessionId = Date.now(); // 🔥 unique per interview
+
+      async function startInterview() {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+
+        const video = document.getElementById("video");
+        video.srcObject = stream;
+
+        mediaRecorder = new MediaRecorder(stream, {
+          mimeType: "video/webm; codecs=vp8,opus",
+        });
+
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) uploadChunk(e.data);
+        };
+
+        // 🔥 Send chunk every 3 seconds
+        mediaRecorder.start(3000);
+
+        logEvent("INTERVIEW_STARTED");
+      }
+
+      function uploadChunk(blob) {
+        const formData = new FormData();
+        formData.append("video", blob);
+        formData.append("session_id", sessionId);
+
+        fetch(`${API_BASE}/upload_chunk.php`, {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        }).catch(() => {});
+      }
+
+      function stopInterview() {
+        safeStop();
+        fetch(`${API_BASE}/finish.php`, {
+          method: "POST",
+          body: JSON.stringify({ session_id: sessionId }),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        logEvent("INTERVIEW_ENDED");
+        alert("Interview saved");
+      }
+
+      /* 🔥 CRITICAL: SAVE EVEN IF USER CLOSES TAB */
+      function safeStop() {
+        if (mediaRecorder && mediaRecorder.state !== "inactive") {
+          mediaRecorder.stop();
+        }
+
+        if (stream) {
+          stream.getTracks().forEach((t) => t.stop());
+        }
+      }
+
+      window.addEventListener("beforeunload", () => {
+        safeStop();
+        navigator.sendBeacon(
+          `${API_BASE}/finish.php`,
+          JSON.stringify({ session_id: sessionId }),
+        );
+      });
+
+      /* Anti-cheat */
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) logEvent("TAB_SWITCH");
+      });
+
+      function logEvent(type) {
+        fetch(`${API_BASE}/event.php`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            session_id: sessionId,
+            event: type,
+            time: new Date().toISOString(),
+          }),
+          credentials: "include",
+        });
+      }
+    </script>
+  </body>
+</html>

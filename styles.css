@@ -1,0 +1,565 @@
+/* 
+ * Valentine's Day Website - Main Stylesheet
+ * Consistent styling across all pages
+ */
+
+/* Base Styles & Variables */
+:root {
+    /* Color Palette */
+    --primary-pink: #ff4d94;
+    --light-pink: #ff7eb3;
+    --soft-pink: #ffe6f2;
+    --dark-pink: #d81b60;
+    --white: #ffffff;
+    --light-gray: #f9f9f9;
+    --text-dark: #333333;
+    --text-light: #666666;
+    
+    /* Typography */
+    --heading-font: 'Dancing Script', cursive;
+    --body-font: 'Poppins', sans-serif;
+    
+    /* Spacing */
+    --section-padding: 80px 20px;
+    --container-width: 1200px;
+    
+    /* Shadows */
+    --shadow-soft: 0 5px 15px rgba(255, 77, 148, 0.1);
+    --shadow-medium: 0 8px 25px rgba(255, 77, 148, 0.15);
+    
+    /* Transitions */
+    --transition-fast: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--body-font);
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--white);
+    overflow-x: hidden;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+    font-family: var(--heading-font);
+    font-weight: 700;
+    color: var(--dark-pink);
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 3.5rem;
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: 2.8rem;
+}
+
+h3 {
+    font-size: 2.2rem;
+}
+
+p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--text-light);
+}
+
+/* Layout Container */
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header & Navigation */
+.site-header {
+    background-color: var(--white);
+    box-shadow: var(--shadow-soft);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 15px 0;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: var(--heading-font);
+    font-size: 2.2rem;
+    color: var(--primary-pink);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.logo span {
+    color: var(--dark-pink);
+}
+
+/* Main Navigation */
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 20px;
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.main-nav a:hover {
+    color: var(--primary-pink);
+}
+
+.main-nav a.active {
+    color: var(--primary-pink);
+    background-color: var(--soft-pink);
+}
+
+.main-nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 10px;
+    right: 10px;
+    height: 2px;
+    background-color: var(--primary-pink);
+}
+
+/* Mobile Navigation Toggle */
+.mobile-nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--primary-pink);
+    cursor: pointer;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, var(--soft-pink) 0%, #fff0f7 100%);
+    padding: var(--section-padding);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ff7eb3" fill-opacity="0.1" d="M50,20 C70,20 80,40 80,50 C80,60 70,80 50,80 C30,80 20,60 20,50 C20,40 30,20 50,20 Z"/></svg>');
+    background-size: 150px;
+    opacity: 0.3;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero h1 {
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero p {
+    font-size: 1.3rem;
+    color: var(--text-light);
+    margin-bottom: 2rem;
+    animation: fadeInUp 1s ease-out 0.2s both;
+}
+
+/* Main Content Sections */
+.main-content {
+    padding: var(--section-padding);
+}
+
+.section {
+    margin-bottom: 100px;
+}
+
+.section:last-child {
+    margin-bottom: 0;
+}
+
+/* Image Gallery */
+.image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: var(--shadow-soft);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.gallery-item:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-medium);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+/* Teddy Bear Animation */
+.teddy-container {
+    text-align: center;
+    margin: 60px auto;
+    max-width: 400px;
+}
+
+.teddy-bear {
+    width: 300px;
+    height: 300px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: var(--shadow-medium);
+    animation: float 3s ease-in-out infinite;
+}
+
+.teddy-bear img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Proposal Section - Interactive Buttons */
+.proposal-section {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: var(--soft-pink);
+    border-radius: 20px;
+    margin: 60px 0;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 18px 45px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, var(--primary-pink), var(--light-pink));
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(255, 77, 148, 0.3);
+}
+
+.btn-secondary {
+    background-color: var(--white);
+    color: var(--primary-pink);
+    border: 2px solid var(--primary-pink);
+}
+
+.btn-secondary:hover {
+    background-color: var(--soft-pink);
+    transform: translateY(-5px);
+}
+
+/* No Button Escape Animation */
+.btn-no {
+    position: relative;
+    transition: all 0.2s ease !important;
+}
+
+/* Timeline for "Our Story" Page */
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 60px auto;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--light-pink), var(--primary-pink));
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 60px;
+    width: 50%;
+    padding: 20px;
+}
+
+.timeline-item:nth-child(odd) {
+    left: 0;
+}
+
+.timeline-item:nth-child(even) {
+    left: 50%;
+}
+
+.timeline-content {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-soft);
+    position: relative;
+}
+
+.timeline-content::before {
+    content: '';
+    position: absolute;
+    top: 30px;
+    width: 20px;
+    height: 20px;
+    background-color: var(--primary-pink);
+    border-radius: 50%;
+}
+
+.timeline-item:nth-child(odd) .timeline-content::before {
+    right: -40px;
+}
+
+.timeline-item:nth-child(even) .timeline-content::before {
+    left: -40px;
+}
+
+/* Footer */
+.site-footer {
+    background-color: var(--soft-pink);
+    padding: 60px 0 30px;
+    text-align: center;
+    margin-top: 100px;
+}
+
+.footer-content {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.footer-heart {
+    color: var(--primary-pink);
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.footer-nav {
+    margin: 30px 0;
+}
+
+.footer-nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.footer-nav a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.footer-nav a:hover {
+    color: var(--primary-pink);
+}
+
+.copyright {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 126, 179, 0.3);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    h1 {
+        font-size: 2.8rem;
+    }
+    
+    h2 {
+        font-size: 2.3rem;
+    }
+    
+    .timeline::before {
+        left: 30px;
+    }
+    
+    .timeline-item {
+        width: 100%;
+        left: 0 !important;
+        padding-left: 70px;
+    }
+    
+    .timeline-content::before {
+        left: -40px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.3rem;
+    }
+    
+    h2 {
+        font-size: 2rem;
+    }
+    
+    .header-content {
+        flex-wrap: wrap;
+    }
+    
+    .mobile-nav-toggle {
+        display: block;
+    }
+    
+    .main-nav {
+        display: none;
+        width: 100%;
+        margin-top: 20px;
+    }
+    
+    .main-nav.active {
+        display: block;
+    }
+    
+    .main-nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .main-nav a {
+        display: block;
+        padding: 10px;
+        text-align: center;
+    }
+    
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+    }
+    
+    .image-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.8rem;
+    }
+    
+    .hero {
+        padding: 60px 20px;
+    }
+    
+    .main-content {
+        padding: 60px 20px;
+    }
+    
+    .image-gallery {
+        grid-template-columns: 1fr;
+    }
+    
+    .teddy-bear {
+        width: 250px;
+        height: 250px;
+    }
+}
