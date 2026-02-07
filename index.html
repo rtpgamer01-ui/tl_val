@@ -27,10 +27,163 @@
         transition: background-color 0.5s ease;
       }
 
+      /* Password Protection Overlay */
+      .password-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #ff7eb3 0%, #ff2e7a 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        padding: 20px;
+      }
+
+      .password-container {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.8s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .password-container h2 {
+        font-family: "Dancing Script", cursive;
+        font-size: 3rem;
+        color: #ff2e7a;
+        margin-bottom: 10px;
+      }
+
+      .password-container p {
+        color: #5a3d5c;
+        margin-bottom: 30px;
+        font-size: 1.1rem;
+      }
+
+      .password-input {
+        position: relative;
+        margin-bottom: 25px;
+      }
+
+      .password-input input {
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 1.1rem;
+        border: 3px solid #ffb3d9;
+        border-radius: 50px;
+        outline: none;
+        transition: all 0.3s ease;
+        background: white;
+      }
+
+      .password-input input:focus {
+        border-color: #ff2e7a;
+        box-shadow: 0 0 0 3px rgba(255, 46, 122, 0.2);
+      }
+
+      .password-input i {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #ff7eb3;
+        cursor: pointer;
+        font-size: 1.2rem;
+      }
+
+      .password-submit {
+        background: linear-gradient(45deg, #ff7eb3, #ff2e7a);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .password-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(255, 46, 122, 0.3);
+      }
+
+      .password-hint {
+        font-size: 0.9rem;
+        color: #ff7eb3;
+        margin-top: 15px;
+        background: #fff5f7;
+        padding: 10px;
+        border-radius: 10px;
+        border-left: 4px solid #ff7eb3;
+      }
+
+      .error-message {
+        color: #ff4757;
+        margin-top: 10px;
+        font-size: 0.9rem;
+        display: none;
+        animation: shake 0.5s ease;
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-5px);
+        }
+        75% {
+          transform: translateX(5px);
+        }
+      }
+
+      .heart-lock {
+        font-size: 3.5rem;
+        color: #ff2e7a;
+        margin-bottom: 20px;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
       .container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 20px;
+      }
+
+      /* Main content - initially hidden */
+      .main-content {
+        display: none;
       }
 
       /* Page navigation */
@@ -176,9 +329,18 @@
         background: linear-gradient(45deg, #a8a8a8, #7a7a7a);
         color: white;
         transition: all 0.2s ease;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
+        position: relative;
+        left: auto;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .btn-no.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
       }
 
       .btn-no:hover {
@@ -418,12 +580,6 @@
           min-width: 200px;
         }
 
-        .btn-no {
-          position: relative;
-          left: auto;
-          transform: none;
-        }
-
         .page-navigation {
           top: 10px;
           right: 10px;
@@ -440,6 +596,14 @@
           max-width: 250px;
           max-height: 180px;
         }
+
+        .password-container {
+          padding: 30px 20px;
+        }
+
+        .password-container h2 {
+          font-size: 2.5rem;
+        }
       }
 
       @media (max-width: 480px) {
@@ -454,7 +618,7 @@
         .page-navigation {
           flex-wrap: wrap;
           justify-content: center;
-          width: auto;
+          width: 90vw;
           right: 50%;
           transform: translateX(50%);
         }
@@ -463,187 +627,319 @@
           max-width: 200px;
           max-height: 150px;
         }
+
+        .password-container {
+          padding: 25px 15px;
+        }
+
+        .password-container h2 {
+          font-size: 2rem;
+        }
       }
     </style>
   </head>
   <body>
-    <!-- Navigation between pages -->
-    <div class="page-navigation">
-      <button class="nav-btn active" data-page="1">1</button>
-      <button class="nav-btn" data-page="2">2</button>
-      <button class="nav-btn" data-page="3">3</button>
-      <button class="nav-btn" data-page="4">4</button>
-      <button class="nav-btn" data-page="5">5</button>
+    <!-- Password Protection Screen -->
+    <div class="password-overlay" id="passwordOverlay">
+      <div class="password-container">
+        <div class="heart-lock">🔒❤️</div>
+        <h2>My Secret Valentine</h2>
+        <p>
+          This message is specially crafted for you. Please enter the secret
+          password to unlock it!
+        </p>
+
+        <div class="password-input">
+          <input
+            type="password"
+            id="passwordInput"
+            placeholder="Enter the magic word..."
+            autocomplete="off"
+          />
+          <i class="fas fa-eye" id="togglePassword"></i>
+        </div>
+
+        <button class="password-submit" id="passwordSubmit">
+          Unlock My Heart <i class="fas fa-heart"></i>
+        </button>
+
+        <div class="error-message" id="errorMessage">
+          <i class="fas fa-exclamation-circle"></i> That's not the right
+          password! Try again.
+        </div>
+
+        <div class="password-hint">
+          <i class="fas fa-lightbulb"></i> Hint: It's the date when we celebrate
+          love (MMDD format)
+        </div>
+      </div>
     </div>
 
-    <!-- Hearts floating in background -->
-    <div class="hearts-container" id="hearts-container"></div>
-
-    <!-- Page 1: Romantic Classic -->
-    <section class="page active" id="page-1">
-      <img
-        src="./cute.gif"
-        alt="Romantic anime couple"
-        class="valentine-gif mobile-gif"
-      />
-      <img
-        src="./cute.gif"
-        alt="Romantic anime couple"
-        class="valentine-gif desktop-gif"
-      />
-      <div class="page-content">
-        <h1>Will You Be My Valentine?</h1>
-        <p>
-          My heart skips a beat every time I think of you. I can't imagine
-          spending this special day with anyone else. Will you make me the
-          happiest person and be my Valentine?
-        </p>
-        <div class="button-container">
-          <button class="btn btn-yes" id="yes-1">
-            Yes, Absolutely! <i class="fas fa-heart"></i>
-          </button>
-          <button class="btn btn-no" id="no-1">Maybe Later</button>
-        </div>
+    <!-- Main Content (Hidden until password is correct) -->
+    <div class="main-content" id="mainContent">
+      <!-- Navigation between pages -->
+      <div class="page-navigation">
+        <button class="nav-btn active" data-page="1">1</button>
+        <button class="nav-btn" data-page="2">2</button>
+        <button class="nav-btn" data-page="3">3</button>
+        <button class="nav-btn" data-page="4">4</button>
+        <button class="nav-btn" data-page="5">5</button>
       </div>
-    </section>
 
-    <!-- Page 2: Cute Bears -->
-    <section class="page" id="page-2">
-      <img
-        src="./cute.gif"
-        alt="Cute anime bear"
-        class="valentine-gif mobile-gif"
-      />
-      <img
-        src="./cute.gif"
-        alt="Cute anime bears"
-        class="valentine-gif desktop-gif"
-      />
-      <div class="page-content">
-        <div class="bear-icon">🐻</div>
-        <h1>Be My Valentine, Sweet Bear?</h1>
-        <p>
-          Like a teddy bear brings comfort and joy, you bring happiness to my
-          life. Will you be my cuddly Valentine this year and forever?
-        </p>
-        <div class="button-container">
-          <button class="btn btn-yes" id="yes-2">
-            Yes, My Teddy! <i class="fas fa-heart"></i>
+      <!-- Hearts floating in background -->
+      <div class="hearts-container" id="hearts-container"></div>
+
+      <!-- Page 1: Romantic Classic -->
+      <section class="page active" id="page-1">
+        <img
+          src="./cute.gif"
+          alt="Romantic anime couple"
+          class="valentine-gif mobile-gif"
+        />
+        <img
+          src="./cute.gif"
+          alt="Romantic anime couple"
+          class="valentine-gif desktop-gif"
+        />
+        <div class="page-content">
+          <h1>Will You Be My Valentine?</h1>
+          <p>
+            My heart skips a beat every time I think of you. I can't imagine
+            spending this special day with anyone else. Will you make me the
+            happiest person and be my Valentine?
+          </p>
+          <div class="button-container">
+            <button class="btn btn-yes" id="yes-1">
+              Yes, Absolutely! <i class="fas fa-heart"></i>
+            </button>
+            <button class="btn btn-no" id="no-1">Maybe Later</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page 2: Cute Bears -->
+      <section class="page" id="page-2">
+        <img
+          src="./cute.gif"
+          alt="Cute anime bear"
+          class="valentine-gif mobile-gif"
+        />
+        <img
+          src="./cute.gif"
+          alt="Cute anime bears"
+          class="valentine-gif desktop-gif"
+        />
+        <div class="page-content">
+          <div class="bear-icon">🐻</div>
+          <h1>Be My Valentine, Sweet Bear?</h1>
+          <p>
+            Like a teddy bear brings comfort and joy, you bring happiness to my
+            life. Will you be my cuddly Valentine this year and forever?
+          </p>
+          <div class="button-container">
+            <button class="btn btn-yes" id="yes-2">
+              Yes, My Teddy! <i class="fas fa-heart"></i>
+            </button>
+            <button class="btn btn-no" id="no-2">I'm Shy</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page 3: Elegant Roses -->
+      <section class="page" id="page-3">
+        <img
+          src="./cute.gif"
+          alt="Anime with roses"
+          class="valentine-gif mobile-gif"
+        />
+        <img
+          src="./cute.gif"
+          alt="Anime girl with rose"
+          class="valentine-gif desktop-gif"
+        />
+        <div class="page-content">
+          <div>
+            <span class="rose">🌹</span>
+            <span class="rose">🌹</span>
+            <span class="rose">🌹</span>
+          </div>
+          <h1>A Rose for My Valentine?</h1>
+          <p>
+            Just as a rose blooms with beauty and grace, my love for you grows
+            each day. Will you accept this rose and be my Valentine?
+          </p>
+          <div class="button-container">
+            <button class="btn btn-yes" id="yes-3">
+              Yes, With Pleasure! <i class="fas fa-heart"></i>
+            </button>
+            <button class="btn btn-no" id="no-3">Not Today</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page 4: Playful Candy -->
+      <section class="page" id="page-4">
+        <img
+          src="./cute.gif"
+          alt="Cute anime candy"
+          class="valentine-gif mobile-gif"
+        />
+        <img
+          src="./cute.gif"
+          alt="Sweet anime couple"
+          class="valentine-gif desktop-gif"
+        />
+        <div class="page-content">
+          <div>
+            <span class="candy"></span>
+            <span class="candy"></span>
+            <span class="candy"></span>
+            <span class="candy"></span>
+            <span class="candy"></span>
+          </div>
+          <h1>Sweet Valentine, Will You Be Mine?</h1>
+          <p>
+            You're sweeter than all the candy in the world! My heart is filled
+            with love for you. Will you be my sweet Valentine?
+          </p>
+          <div class="button-container">
+            <button class="btn btn-yes" id="yes-4">
+              Yes, Sweetheart! <i class="fas fa-heart"></i>
+            </button>
+            <button class="btn btn-no" id="no-4">Too Sweet For Me</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page 5: Celestial Love -->
+      <section class="page" id="page-5">
+        <img
+          src="./cute.gif"
+          alt="Celestial anime"
+          class="valentine-gif mobile-gif"
+        />
+        <img
+          src="./cute.gif"
+          alt="Starry anime"
+          class="valentine-gif desktop-gif"
+        />
+        <div class="page-content">
+          <h1>My Love for You is Infinite</h1>
+          <p>
+            Like the stars in the night sky, my love for you shines bright and
+            endless. Will you be my Valentine and make my universe complete?
+          </p>
+          <div class="button-container">
+            <button class="btn btn-yes" id="yes-5">
+              Yes, My Star! <i class="fas fa-heart"></i>
+            </button>
+            <button class="btn btn-no" id="no-5">I Need Space</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Success message -->
+      <div class="success-message" id="success-message">
+        <div class="success-content">
+          <h2>You Made My Day!</h2>
+          <p>
+            I'm over the moon! You just made this the best Valentine's Day ever!
+            <i class="fas fa-heart"></i>
+          </p>
+          <p>Thank you for saying YES! I can't wait to celebrate with you!</p>
+          <button class="close-success" id="close-success">
+            Continue Exploring
           </button>
-          <button class="btn btn-no" id="no-2">I'm Shy</button>
         </div>
-      </div>
-    </section>
-
-    <!-- Page 3: Elegant Roses -->
-    <section class="page" id="page-3">
-      <img
-        src="./cute.gif"
-        alt="Anime with roses"
-        class="valentine-gif mobile-gif"
-      />
-      <img
-        src="./cute.gif"
-        alt="Anime girl with rose"
-        class="valentine-gif desktop-gif"
-      />
-      <div class="page-content">
-        <div>
-          <span class="rose">🌹</span>
-          <span class="rose">🌹</span>
-          <span class="rose">🌹</span>
-        </div>
-        <h1>A Rose for My Valentine?</h1>
-        <p>
-          Just as a rose blooms with beauty and grace, my love for you grows
-          each day. Will you accept this rose and be my Valentine?
-        </p>
-        <div class="button-container">
-          <button class="btn btn-yes" id="yes-3">
-            Yes, With Pleasure! <i class="fas fa-heart"></i>
-          </button>
-          <button class="btn btn-no" id="no-3">Not Today</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Page 4: Playful Candy -->
-    <section class="page" id="page-4">
-      <img
-        src="./cute.gif"
-        alt="Cute anime candy"
-        class="valentine-gif mobile-gif"
-      />
-      <img
-        src="./cute.gif"
-        alt="Sweet anime couple"
-        class="valentine-gif desktop-gif"
-      />
-      <div class="page-content">
-        <div>
-          <span class="candy"></span>
-          <span class="candy"></span>
-          <span class="candy"></span>
-          <span class="candy"></span>
-          <span class="candy"></span>
-        </div>
-        <h1>Sweet Valentine, Will You Be Mine?</h1>
-        <p>
-          You're sweeter than all the candy in the world! My heart is filled
-          with love for you. Will you be my sweet Valentine?
-        </p>
-        <div class="button-container">
-          <button class="btn btn-yes" id="yes-4">
-            Yes, Sweetheart! <i class="fas fa-heart"></i>
-          </button>
-          <button class="btn btn-no" id="no-4">Too Sweet For Me</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Page 5: Celestial Love -->
-    <section class="page" id="page-5">
-      <img
-        src="./cute.gif"
-        alt="Celestial anime"
-        class="valentine-gif mobile-gif"
-      />
-      <img
-        src="./cute.gif"
-        alt="Starry anime"
-        class="valentine-gif desktop-gif"
-      />
-      <div class="page-content">
-        <h1>My Love for You is Infinite</h1>
-        <p>
-          Like the stars in the night sky, my love for you shines bright and
-          endless. Will you be my Valentine and make my universe complete?
-        </p>
-        <div class="button-container">
-          <button class="btn btn-yes" id="yes-5">
-            Yes, My Star! <i class="fas fa-heart"></i>
-          </button>
-          <button class="btn btn-no" id="no-5">I Need Space</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Success message -->
-    <div class="success-message" id="success-message">
-      <div class="success-content">
-        <h2>You Made My Day!</h2>
-        <p>
-          I'm over the moon! You just made this the best Valentine's Day ever!
-          <i class="fas fa-heart"></i>
-        </p>
-        <p>Thank you for saying YES! I can't wait to celebrate with you!</p>
-        <button class="close-success" id="close-success">
-          Continue Exploring
-        </button>
       </div>
     </div>
 
     <script>
+      // Password protection logic
+      const PASSWORD = "0214"; // Valentine's Day in MMDD format: February 14
+      const passwordOverlay = document.getElementById("passwordOverlay");
+      const mainContent = document.getElementById("mainContent");
+      const passwordInput = document.getElementById("passwordInput");
+      const passwordSubmit = document.getElementById("passwordSubmit");
+      const togglePassword = document.getElementById("togglePassword");
+      const errorMessage = document.getElementById("errorMessage");
+
+      // Track which pages have "Yes" clicked
+      const yesClickedPages = new Set();
+
+      // Toggle password visibility
+      togglePassword.addEventListener("click", function () {
+        const type =
+          passwordInput.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+        passwordInput.setAttribute("type", type);
+        this.classList.toggle("fa-eye");
+        this.classList.toggle("fa-eye-slash");
+      });
+
+      // Submit password
+      passwordSubmit.addEventListener("click", checkPassword);
+      passwordInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          checkPassword();
+        }
+      });
+
+      function checkPassword() {
+        const enteredPassword = passwordInput.value.trim();
+
+        if (enteredPassword === PASSWORD) {
+          // Correct password - unlock the content
+          errorMessage.style.display = "none";
+
+          // Create celebration effect
+          for (let i = 0; i < 20; i++) {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤";
+            heart.style.fontSize = "25px";
+            heart.style.left = Math.random() * 100 + "%";
+            heart.style.animationDelay = "0s";
+            heart.style.animationDuration = "3s";
+            heart.style.color = "#ff2e7a";
+            heart.style.zIndex = "10000";
+            heart.style.position = "fixed";
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 3000);
+          }
+
+          // Hide password overlay and show main content
+          passwordOverlay.style.opacity = "0";
+          passwordOverlay.style.transition = "opacity 0.5s ease";
+
+          setTimeout(() => {
+            passwordOverlay.style.display = "none";
+            mainContent.style.display = "block";
+            // Initialize main content animations
+            createHearts();
+            createStars();
+          }, 500);
+        } else {
+          // Wrong password - show error
+          errorMessage.style.display = "block";
+          passwordInput.style.borderColor = "#ff4757";
+          passwordInput.style.animation = "shake 0.5s ease";
+
+          setTimeout(() => {
+            passwordInput.style.animation = "";
+            passwordInput.value = "";
+            passwordInput.focus();
+          }, 500);
+
+          // Reset border color after error
+          setTimeout(() => {
+            passwordInput.style.borderColor = "#ffb3d9";
+          }, 1000);
+        }
+      }
+
       // Generate floating hearts
       function createHearts() {
         const heartsContainer = document.getElementById("hearts-container");
@@ -710,27 +1006,68 @@
             .querySelectorAll(".page")
             .forEach((page) => page.classList.remove("active"));
           document.getElementById(`page-${pageId}`).classList.add("active");
+
+          // Reset all "No" buttons positions on page change (but keep hidden if "Yes" was clicked)
+          document.querySelectorAll(".btn-no").forEach((btn) => {
+            // Reset position and style
+            btn.style.position = "";
+            btn.style.left = "";
+            btn.style.top = "";
+            btn.style.zIndex = "";
+            btn.style.transition = "";
+
+            // Reset to original text
+            const originalTexts = {
+              "no-1": "Maybe Later",
+              "no-2": "I'm Shy",
+              "no-3": "Not Today",
+              "no-4": "Too Sweet For Me",
+              "no-5": "I Need Space",
+            };
+            btn.textContent = originalTexts[btn.id] || "No";
+
+            // Check if "Yes" was clicked on this page
+            const btnPageId = btn.id.split("-")[1];
+            if (yesClickedPages.has(parseInt(btnPageId))) {
+              // Hide the "No" button if "Yes" was clicked on this page
+              btn.classList.add("hidden");
+            } else {
+              // Show the "No" button
+              btn.classList.remove("hidden");
+            }
+          });
         });
       });
 
       // Yes button functionality
       document.querySelectorAll(".btn-yes").forEach((btn) => {
         btn.addEventListener("click", function () {
+          // Get page ID
+          const pageId = parseInt(this.id.split("-")[1]);
+          
+          // Add to set of pages where "Yes" was clicked
+          yesClickedPages.add(pageId);
+          
+          // Hide the corresponding "No" button
+          const noButton = document.getElementById(`no-${pageId}`);
+          if (noButton) {
+            noButton.classList.add("hidden");
+          }
+          
           // Show success message
           document.getElementById("success-message").style.display = "flex";
 
           // Add celebration effect
-          const pageId = this.id.split("-")[1];
           celebrate(pageId);
         });
       });
 
-      // No button escape functionality - FIXED VERSION
+      // No button escape functionality
       document.querySelectorAll(".btn-no").forEach((btn) => {
         let moveTimeout = null;
 
         btn.addEventListener("mouseover", function () {
-          if (!moveTimeout) {
+          if (!moveTimeout && !this.classList.contains("hidden")) {
             moveButton(this);
             moveTimeout = setTimeout(() => {
               moveTimeout = null;
@@ -740,7 +1077,7 @@
 
         btn.addEventListener("touchstart", function (e) {
           e.preventDefault();
-          if (!moveTimeout) {
+          if (!moveTimeout && !this.classList.contains("hidden")) {
             moveButton(this);
             moveTimeout = setTimeout(() => {
               moveTimeout = null;
@@ -750,7 +1087,7 @@
 
         btn.addEventListener("click", function (e) {
           e.preventDefault();
-          if (!moveTimeout) {
+          if (!moveTimeout && !this.classList.contains("hidden")) {
             moveButton(this);
             moveTimeout = setTimeout(() => {
               moveTimeout = null;
@@ -759,56 +1096,27 @@
         });
       });
 
-      // Move the "No" button to a random position within its container
+      // Move the "No" button to a random position
       function moveButton(button) {
-        const container = button.parentElement;
-        const containerRect = container.getBoundingClientRect();
+        // Don't move if button is hidden
+        if (button.classList.contains("hidden")) return;
+
         const buttonRect = button.getBoundingClientRect();
 
-        // Check if we're on mobile
-        const isMobile = window.innerWidth <= 768;
+        // Move it anywhere on screen
+        const maxX = window.innerWidth - buttonRect.width - 50;
+        const maxY = window.innerHeight - buttonRect.height - 50;
 
-        if (isMobile) {
-          // On mobile, make button bounce around within container
-          const maxX = containerRect.width - buttonRect.width - 20;
-          const maxY = containerRect.height - buttonRect.height - 20;
+        // Generate random positions within window bounds
+        const randomX = Math.max(50, Math.floor(Math.random() * maxX));
+        const randomY = Math.max(50, Math.floor(Math.random() * maxY));
 
-          // Generate random positions within container bounds
-          const randomX = Math.max(
-            10,
-            Math.min(maxX, Math.floor(Math.random() * maxX)),
-          );
-          const randomY = Math.max(
-            10,
-            Math.min(maxY, Math.floor(Math.random() * maxY)),
-          );
-
-          // Apply the new position
-          button.style.position = "absolute";
-          button.style.left = `${randomX}px`;
-          button.style.top = `${randomY}px`;
-          button.style.transition = "left 0.4s ease-out, top 0.4s ease-out";
-        } else {
-          // On desktop, move it around but keep it within visible area
-          const maxX = window.innerWidth - buttonRect.width - 50;
-          const maxY = window.innerHeight - buttonRect.height - 50;
-
-          // Generate random positions within window bounds
-          const randomX = Math.max(
-            50,
-            Math.min(maxX, Math.floor(Math.random() * maxX)),
-          );
-          const randomY = Math.max(
-            50,
-            Math.min(maxY, Math.floor(Math.random() * maxY)),
-          );
-
-          // Apply the new position
-          button.style.position = "fixed";
-          button.style.left = `${randomX}px`;
-          button.style.top = `${randomY}px`;
-          button.style.transition = "left 0.4s ease-out, top 0.4s ease-out";
-        }
+        // Apply the new position
+        button.style.position = "fixed";
+        button.style.left = `${randomX}px`;
+        button.style.top = `${randomY}px`;
+        button.style.zIndex = "1000";
+        button.style.transition = "left 0.3s ease-out, top 0.3s ease-out";
 
         // Add a funny message
         const messages = [
@@ -826,26 +1134,39 @@
           "No way!",
           "Try clicking faster!",
           "I'm too quick!",
+          "Can't catch me!",
+          "Over here!",
+          "Not that easy!",
+          "You missed!",
+          "Try again!",
+          "Nope!",
+          "Maybe next time!",
+          "Too far!",
+          "Wrong button!",
+          "Click Yes instead!",
+          "I'm escaping!",
+          "Bye bye!",
+          "See ya!",
+          "Gotta go!",
+          "Too quick for you!",
+          "Not today!",
         ];
 
         const randomMessage =
           messages[Math.floor(Math.random() * messages.length)];
-        const originalText = button.textContent;
         button.textContent = randomMessage;
 
         // Reset message after a delay
         setTimeout(() => {
           // Only reset if the button hasn't been moved again
-          if (button.textContent === randomMessage) {
-            const originalTexts = {
-              "no-1": "Maybe Later",
-              "no-2": "I'm Shy",
-              "no-3": "Not Today",
-              "no-4": "Too Sweet For Me",
-              "no-5": "I Need Space",
-            };
-            button.textContent = originalTexts[button.id] || "No";
-          }
+          const originalTexts = {
+            "no-1": "Maybe Later",
+            "no-2": "I'm Shy",
+            "no-3": "Not Today",
+            "no-4": "Too Sweet For Me",
+            "no-5": "I Need Space",
+          };
+          button.textContent = originalTexts[button.id] || "No";
         }, 800);
       }
 
@@ -854,7 +1175,7 @@
         const page = document.getElementById(`page-${pageId}`);
 
         // Create explosion of hearts
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 100; i++) {
           const heart = document.createElement("div");
           heart.classList.add("heart");
           heart.innerHTML = "❤";
@@ -870,7 +1191,7 @@
           heart.style.animationDelay = `${delay}s`;
           heart.style.animationDuration = `${duration}s`;
           heart.style.color = "#ff2e7a";
-          heart.style.zIndex = "1000";
+          heart.style.zIndex = "10000000";
           heart.style.position = "fixed";
           heart.style.top = "50%";
 
@@ -901,35 +1222,9 @@
           document.getElementById("success-message").style.display = "none";
         });
 
-      // Initialize
-      document.addEventListener("DOMContentLoaded", function () {
-        createHearts();
-        createStars();
-
-        // Make sure all "No" buttons are in their original positions initially
-        document.querySelectorAll(".btn-no").forEach((btn) => {
-          if (window.innerWidth > 768) {
-            btn.style.position = "relative";
-            btn.style.left = "auto";
-            btn.style.top = "auto";
-          }
-        });
-      });
-
-      // Make pages responsive on window resize
-      window.addEventListener("resize", function () {
-        // Reset "No" button positions on resize
-        document.querySelectorAll(".btn-no").forEach((btn) => {
-          if (window.innerWidth <= 768) {
-            btn.style.position = "relative";
-            btn.style.left = "auto";
-            btn.style.top = "auto";
-          } else {
-            btn.style.position = "relative";
-            btn.style.left = "auto";
-            btn.style.top = "auto";
-          }
-        });
+      // Focus on password input when page loads
+      window.addEventListener("load", function () {
+        passwordInput.focus();
       });
     </script>
   </body>
