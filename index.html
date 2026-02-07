@@ -334,7 +334,9 @@
         transform: none;
         opacity: 1;
         visibility: visible;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
+        transition:
+          opacity 0.3s ease,
+          visibility 0.3s ease;
       }
 
       .btn-no.hidden {
@@ -668,9 +670,13 @@
           password! Try again.
         </div>
 
-        <div class="password-hint">
+        <!-- <div class="password-hint">
           <i class="fas fa-lightbulb"></i> Hint: It's the date when we celebrate
           love (MMDD format)
+        </div> -->
+        <div class="password-hint">
+          <i class="fas fa-lightbulb"></i> Hint: It's what I feel for you (two
+          words)
         </div>
       </div>
     </div>
@@ -856,7 +862,7 @@
 
     <script>
       // Password protection logic
-      const PASSWORD = "0214"; // Valentine's Day in MMDD format: February 14
+      const PASSWORD = "my love"; // Valentine's Day in MMDD format: February 14
       const passwordOverlay = document.getElementById("passwordOverlay");
       const mainContent = document.getElementById("mainContent");
       const passwordInput = document.getElementById("passwordInput");
@@ -1044,16 +1050,16 @@
         btn.addEventListener("click", function () {
           // Get page ID
           const pageId = parseInt(this.id.split("-")[1]);
-          
+
           // Add to set of pages where "Yes" was clicked
           yesClickedPages.add(pageId);
-          
+
           // Hide the corresponding "No" button
           const noButton = document.getElementById(`no-${pageId}`);
           if (noButton) {
             noButton.classList.add("hidden");
           }
-          
+
           // Show success message
           document.getElementById("success-message").style.display = "flex";
 
